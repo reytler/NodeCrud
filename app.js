@@ -44,7 +44,7 @@ app.set('view engine', 'handlebars');
 
 //mysql
 const sql=mysql.createConnection({
-    host:'localhost',
+    host:'192.168.0.18',
     user:'master',
     password:'master',
     port:3306
@@ -74,7 +74,7 @@ app.get('/home',Logado,(req,res)=>{
     res.render('home')
 })
 
-app.post('/home',urlencodeParser,(req,res)=>{
+app.post('/home',urlencodeParser,Logado,(req,res)=>{
     if(![req.body.nome]){
         res.render('home')
     }else{
@@ -113,7 +113,7 @@ app.get('/logout',(req,res)=>{
 })
 
 //CADASTRAR
-app.post('/cadastrar',urlencodeParser,(req,res)=>{
+app.post('/cadastrar',urlencodeParser,Logado,(req,res)=>{
     //VALIDAÇÕES
     var erros = []
     //NOME
@@ -209,7 +209,7 @@ app.post('/cadastrar',urlencodeParser,(req,res)=>{
 })
 
 //ATUALIZAR
-app.get('/update/:id',(req,res)=>{
+app.get('/update/:id',Logado,(req,res)=>{
     sql.query("select * from paciente where id=?",[req.params.id],(err,results,fields)=>{
         res.render('update',{
             id:results[0].id,
@@ -220,7 +220,7 @@ app.get('/update/:id',(req,res)=>{
         })
     })
 })
-app.post('/update',(req,res)=>{
+app.post('/update',Logado,(req,res)=>{
     sql.query("update paciente set nome=?, telefone1=?, profissao=?, errua=? where id=?",
     [
         req.body.nome,
@@ -234,7 +234,7 @@ app.post('/update',(req,res)=>{
 })
 
 //APAGAR
-app.get('/deletar/:id',(req,res)=>{
+app.get('/deletar/:id',Logado,(req,res)=>{
     sql.query("delete from paciente where id=?",[req.params.id])
     req.flash("success_msg","Cadastro deletado com sucesso!")
     res.redirect('/home')

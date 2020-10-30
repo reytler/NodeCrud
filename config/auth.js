@@ -6,7 +6,7 @@ const crypto = require('crypto')
 const flash = require("connect-flash")
 app.use(flash())
 var connection = mysql.createConnection({
-    host     : 'localhost',
+    host     : '192.168.0.18',
     user     : 'master',
     password : 'master'
 });
